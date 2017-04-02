@@ -48,13 +48,13 @@ def edit_dist(str1, str2):
     return d
 
 def jaccard(w1, w2):
-    intersect = set(w1).intersection(w2)
-    union = set(w1).union(w2)
+    intersect = set(w1).intersection(set(w2))
+    union = set(w1).union(set(w2))
     return default_divide(len(intersect), len(union))
 
 def dice(w1, w2):
-    intersect = set(w1).intersection(w2)
-    return default_divide(2*len(intersect), len(w1)*len(w2))
+    intersect = set(w1).intersection(set(w2))
+    return default_divide(2*len(intersect), len(set(w1))*len(set(w2)))
 
 def comp_dist(x, y):
     if x == y:

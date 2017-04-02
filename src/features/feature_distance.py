@@ -4,20 +4,20 @@ from ..nlp_utils import *
 
 class EditDistance():
     def gen(self, s1, s2):
-        return edit_dist(s1, s2)
+        return [edit_dist(s1, s2)]
 
 class SentenceJaccard():
     def gen(self, s1, s2):
-        return jaccard(list(s1), list(s2))
+        return [jaccard(s1.split(), s2.split())]
 
 class SentenceDice():
     def gen(self, s1, s2):
-        return dice(list(s1), list(s2))
+        return [dice(s1.split(), s2.split())]
 
 
 class CompressionDistance():
     def gen(self, s1, s2):
-        return comp_dist(s1, s2)
+        return [comp_dist(s1, s2)]
 
 class NgramDistance():
     def gen(self,s1, s2):

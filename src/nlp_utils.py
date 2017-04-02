@@ -17,5 +17,5 @@ def ngram(s, n):
     result = []
     words = s.split()
     for start in range(len(words) - n + 1):
-        result.append(words[start : start + n])
+        result.append(" ".join(words[start : start + n]))
     return result
