@@ -28,6 +28,23 @@ class NgramDistance():
                 dice(ngram(s1, 1), ngram(s2, 1)),
                 dice(ngram(s1, 1), ngram(s2, 1))]
 
+class LooseJaccard():
+    def __init__(self, threshold=1.0):
+        self.threshold = threshold
+
+    def gen(self,s1, s2):
+        return [loose_jaccard(ngram(s1, 1), ngram(s2, 1), self.threshold),
+                loose_jaccard(ngram(s1, 2), ngram(s2, 2), self.threshold)]
+
+
+class LooseCount():
+    def __init__(self, threshold=1.0):
+        self.threshold = threshold
+
+    def gen(self,s1, s2):
+        return [loose_match_count(ngram(s1, 1), ngram(s2, 1), self.threshold),
+                loose_match_count(ngram(s1, 2), ngram(s2, 2), self.threshold)]
+
 def main(*argv):
     pass
 

@@ -1,13 +1,43 @@
 import Levenshtein
 import lzma
 from difflib import SequenceMatcher
+import numpy as np
 
 def default_divide(x, y, value = 0.0):
     if y != 0:
         value = x / float(y)
     return value
 
+def rmse(vec1, vec2):
+    vdiff = vec1 - vec2
+    rmse = np.sqrt(np.mean(vdiff**2))
+    return rmse
 
+
+def loose_match(str1, str2, threshold=1.0):
+    assert threshold >= 0.0 and threshold <= 1.0, "Wrong threshold."
+    if float(threshold) == 1.0:
+        return str1 == str2
+    else:
+        return (1. - edit_dist(str1, str2)) >= threshold
+
+def loose_jaccard(w1, w2, threshold=1.0):
+    match_count = 0
+    total_count = 0
+    for a in w1:
+        for b in w2:
+            if loose_match(a,b, threshold):
+                match_count += 1
+            total_count += 1
+    return default_divide(match_count/total_count, 0)
+
+def loose_match_count(w1, w2, threshold=1.0):
+    match_count = 0
+    for a in w1:
+        for b in w2:
+            if loose_match(a,b, threshold):
+                match_count += 1
+    return match_count
 
 def edit_dist(str1, str2):
     try:
@@ -24,8 +54,7 @@ def jaccard(w1, w2):
 
 def dice(w1, w2):
     intersect = set(w1).intersection(w2)
-    union = set(w1).union(w2)
-    return default_divide(intersect, len(union))
+    return default_divide(2*len(intersect), len(w1)*len(w2))
 
 def comp_dist(x, y):
     if x == y:
@@ -39,3 +68,4 @@ def comp_dist(x, y):
     a = min(l_xy,l_yx)-min(l_x,l_y)
     b = max(l_x,l_y)
     return default_divide(a, b) if a > b else default_divide(b, a)
+
