@@ -1,18 +1,18 @@
 from src.dist_utils import loose_match
-from src.aggregator import basic_aggregator
+from src.nlp_utils import *
 from src import config
 from collections import defaultdict
 import numpy as np
 
 def create_df_dict(corpas):
-    dict = defaultdict()
+    df_dict = defaultdict(int)
     for sentence in corpas:
         word_set = set()
         for word in sentence.split():
             word_set.add(word)
         for word in word_set:
-            dict[word] += 1
-    return dict
+            df_dict[word] += 1
+    return df_dict
 
 def get_idf(N, df_dict, word):
     return np.log((N - df_dict[word] + 0.5)/(df_dict[word] + 0.5))
@@ -26,9 +26,9 @@ class CooccuranceCount():
         if len(s1) > len(s2):
             s1, s2 = s2, s1
         var_list = []
-        for ngram in range(3):
-            ngram1 = ngram(s1, ngram)
-            ngram2 = ngram(s2, ngram)
+        for n in range(3):
+            ngram1 = ngram(s1, n + 1)
+            ngram2 = ngram(s2, n + 1)
             for w1 in ngram1:
                 count = 0
                 for w2 in ngram2:
@@ -50,9 +50,9 @@ class IdfCount():
         if len(s1) > len(s2):
             s1, s2 = s2, s1
         var_list = []
-        for ngram in range(1):
-            ngram1 = ngram(s1, ngram)
-            ngram2 = ngram(s2, ngram)
+        for n in range(1):
+            ngram1 = ngram(s1, n + 1)
+            ngram2 = ngram(s2, n + 1)
             for w1 in ngram1:
                 count = 0
                 for w2 in ngram2:
