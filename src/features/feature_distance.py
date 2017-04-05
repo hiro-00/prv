@@ -25,8 +25,8 @@ class NgramDistance():
                 jaccard(ngram(s1, 2), ngram(s2, 2)),
                 jaccard(ngram(s1, 3), ngram(s2, 3)),
                 dice(ngram(s1, 1), ngram(s2, 1)),
-                dice(ngram(s1, 1), ngram(s2, 1)),
-                dice(ngram(s1, 1), ngram(s2, 1))]
+                dice(ngram(s1, 2), ngram(s2, 2)),
+                dice(ngram(s1, 3), ngram(s2, 3))]
 
 class LooseJaccard():
     def __init__(self, threshold=1.0):
@@ -34,7 +34,8 @@ class LooseJaccard():
 
     def gen(self,s1, s2):
         return [loose_jaccard(ngram(s1, 1), ngram(s2, 1), self.threshold),
-                loose_jaccard(ngram(s1, 2), ngram(s2, 2), self.threshold)]
+                loose_jaccard(ngram(s1, 3), ngram(s2, 3), self.threshold),
+                loose_jaccard(ngram(s1, 3), ngram(s2, 3), self.threshold)]
 
 
 class LooseCount():
@@ -43,7 +44,21 @@ class LooseCount():
 
     def gen(self,s1, s2):
         return [loose_match_count(ngram(s1, 1), ngram(s2, 1), self.threshold),
-                loose_match_count(ngram(s1, 2), ngram(s2, 2), self.threshold)]
+                loose_match_count(ngram(s1, 2), ngram(s2, 2), self.threshold),
+                loose_match_count(ngram(s1, 3), ngram(s2, 3), self.threshold)]
+
+
+class EditAggregate():
+    def __init__(self, aggregator):
+        self.aggregator = aggregator
+
+    def gen(self, s1, s2):
+        candidates = []
+        for n in range(2,4):
+            for ngram1 in ngram(s1, n):
+                for ngram2 in ngram(s2, n):
+                    candidates.append(edit_dist(ngram1, ngram2))
+        return self.aggregator(candidates)
 
 def main(*argv):
     pass

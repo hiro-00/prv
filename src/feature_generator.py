@@ -2,13 +2,13 @@ from src.features.feature_basic import *
 from src.features.feature_tfidf import *
 from src.features.feature_statistics import *
 from src.features.feature_word2vec import *
-from src.aggregator import *
-from sklearn.feature_extraction.text import TfidfVectorizer
 from src.features.feature_distance import *
+from src.aggregator import *
 from src.file_util import *
+from sklearn.feature_extraction.text import TfidfVectorizer
 import gensim
-
 import csv
+
 
 def use_basic():
     features_basic = [
@@ -18,15 +18,22 @@ def use_basic():
     ]
     return features_basic
 
+
 def use_distance():
     features_distance = [
         EditDistance(),
         SentenceJaccard(),
+        LooseJaccard(0.9),
+        LooseJaccard(0.8),
+        LooseCount(0.9),
+        LooseCount(0.8),
         SentenceDice(),
         CompressionDistance(),
         NgramDistance(),
+        EditAggregate(basic_aggregator)
     ]
     return features_distance
+
 
 def use_tfidf():
     train = load_train_corpas()
@@ -38,6 +45,7 @@ def use_tfidf():
         tfIdfSvd(tfIdf_model, svd_model)
     ]
     return features_tfidf
+
 
 def use_stat():
     train = load_train_corpas()
