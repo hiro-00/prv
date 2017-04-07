@@ -17,7 +17,7 @@ def create_df_dict(corpas):
 def get_idf(N, df_dict, word):
     return np.log((N - df_dict[word] + 0.5)/(df_dict[word] + 0.5))
 
-class CooccuranceCount():
+class CooccuranceCountAgg():
     def __init__(self, threshold, aggregator):
         self.threshold = threshold
         self.aggregator = aggregator
@@ -26,7 +26,7 @@ class CooccuranceCount():
         if len(s1) > len(s2):
             s1, s2 = s2, s1
         var_list = []
-        for n in range(3):
+        for n in range(1,4):
             ngram1 = ngram(s1, n + 1)
             ngram2 = ngram(s2, n + 1)
             for w1 in ngram1:
@@ -39,7 +39,7 @@ class CooccuranceCount():
             var_list = [config.MISSING_VALUE_NUMERIC]
         return self.aggregator(var_list)
 
-class IdfCount():
+class IdfCountAgg():
     def __init__(self, document_num, threshold, aggregator, df_dict):
         self.threshold = threshold
         self.aggregator = aggregator
