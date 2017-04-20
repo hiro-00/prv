@@ -2,6 +2,8 @@ import sys
 from ..dist_utils import *
 from ..nlp_utils import *
 
+from src import config
+
 class EditDistance():
     def gen(self, s1, s2):
         return [edit_dist(s1, s2)]
@@ -34,7 +36,7 @@ class LooseJaccard():
 
     def gen(self,s1, s2):
         return [loose_jaccard(ngram(s1, 1), ngram(s2, 1), self.threshold),
-                loose_jaccard(ngram(s1, 3), ngram(s2, 3), self.threshold),
+                loose_jaccard(ngram(s1, 2), ngram(s2, 2), self.threshold),
                 loose_jaccard(ngram(s1, 3), ngram(s2, 3), self.threshold)]
 
 
@@ -58,6 +60,8 @@ class EditAggregate():
             for ngram1 in ngram(s1, n):
                 for ngram2 in ngram(s2, n):
                     candidates.append(edit_dist(ngram1, ngram2))
+        if len(candidates) == 0:
+            candidates = [config.MISSING_VALUE_NUMERIC]
         return self.aggregator(candidates)
 
 def main(*argv):

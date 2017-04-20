@@ -26,7 +26,7 @@ class CooccuranceCountAgg():
         if len(s1) > len(s2):
             s1, s2 = s2, s1
         var_list = []
-        for n in range(1,4):
+        for n in range(0, 3):
             ngram1 = ngram(s1, n + 1)
             ngram2 = ngram(s2, n + 1)
             for w1 in ngram1:

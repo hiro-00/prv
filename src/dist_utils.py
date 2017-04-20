@@ -29,7 +29,7 @@ def loose_jaccard(w1, w2, threshold=1.0):
             if loose_match(a,b, threshold):
                 match_count += 1
             total_count += 1
-    return default_divide(match_count/total_count, 0)
+    return default_divide(match_count, total_count, 1)
 
 def loose_match_count(w1, w2, threshold=1.0):
     match_count = 0
